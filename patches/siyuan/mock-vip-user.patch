@@ -1,0 +1,62 @@
+diff --git forkSrcPrefix/kernel/api/setting.go forkDstPrefix/kernel/api/setting.go
+index 9010350078560bb298de72bc73d54e51db60f21b..dfe9ab286f50431bdb30c633b8e63886b5046419 100644
+--- forkSrcPrefix/kernel/api/setting.go
++++ forkDstPrefix/kernel/api/setting.go
+@@ -586,7 +586,7 @@ func getPublish(c *gin.Context) {
+ 	}
+ }
+ 
+-func getCloudUser(c *gin.Context) {
++func getCloudUserOrigin(c *gin.Context) {
+ 	ret := gulu.Ret.NewResult()
+ 	defer c.JSON(http.StatusOK, ret)
+ 
+@@ -608,6 +608,48 @@ func getCloudUser(c *gin.Context) {
+ 	ret.Data = model.Conf.GetUser()
+ }
+ 
++func getCloudUser(c *gin.Context) {
++	ret := gulu.Ret.NewResult()
++	defer c.JSON(http.StatusOK, ret)
++
++	if !model.IsAdminRoleContext(c) {
++		return
++	}
++
++	user := &conf.User{
++			UserId: "0",
++			UserName: "User",
++			UserAvatarURL: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAgVBMVEUAAABfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmdfYmcluHmDAAAAKnRSTlMABerha0Tk+gv0Ee8aIRZXL9NN3Jy8w7Y7KM6ufI/JokCBXzRz2KiHZ5Ww13yiAAAEhUlEQVR42u3Z6RKaMBAA4ABiCFcBkVMBb7vv/4CdtmKAQBKmHNMZvr+orJvNJhC02Ww2m80/UG6nOPOPZ11BqzAvBGMAwKRM0QrSCMMH1oLlk5Bm0GDpaGFmjqEps9GyKgtayM5ASzLPGNqKZVPg+NChVmhJNxU6rPeiE0FnAiD3RYsgUQFWrUJvzwxBgJbk5hjaDsu2Y+UHgRZ8NtCi7KyTAA8tS7keWl3gtPhqZFx9QlfDk4mWp4f4c//4aqA16OQTwAWtQvkuSJGJ1hBYAGumwDjCl+ag5QUEvvBL+fcRtb1ETzxb9pfMIzRoqextXC+pKs9hpo3zDuOoiOJy50g2IgINWLIRudefcVQUx+ep0zlvpVr3tOdNvgIo30YSnLNWr96x3lpdY6BimQgSC1rwDonZYSNtWdAILIamPBUnoMTQljkSO1nSSlr1Hc8QWvBPUzgFVOjAF0VUNrvOlyK3LgACbVog+i80ZfILchpBRz1sL+ggF8Hi8oNWgHwv+MFkLfpcKZjfyh1+McUYWI+UXzYXJmrtc2kPXRE/nVcLepC7IjUFKPVzSR0ZgPnE0Kfg5s0p8VAAB+iKudmsNOhlcXuBe2YysP9cyplkhi4vASGGfkXKnYXMwPl1eTKpuSq8aqY1M2r2VEymz3V9dqYBjh1eMeUwyL/xMvcinSHzaF8T9iFxAsQpSIuh3mmcWj/q8145OTmGYT5v+nitr1ql2cjO+wEU8d+KZALYiTD8zaCwgNqf3Fab0p8HC0MdoTb4rO2GGHiidDByv049ANGiq9ndKiWn8Bn6dXyXgYmoH4BL3Q09SNU5foTP8qXbRs9nTNO+kDqXYSqfAHETdU/frdDLNk1DGRyn7wjjqOrLowYC1snoKz/yvc5/lZP68JWxk8F5YhDxE9R1a6ye+x/8JesI1OFtcKaAfAr0rBH2w0NIus+rJ4NJgFh0471JiGzEY7T3baRMmQoQUt/tl/qtX8ShibiS9jTDx4TZ1QodvUbSaEppDfI4BbRlAacH8HsBLT/qoAvfvwETgcLsKGRTcDvC2McH48LchZxdZgqIJoLyt6DYb+Qu4lN6boPL32HbJQZZRfKn/CzoIi8TCXg+9EUgNwVoqSnIfRFg7Olei9+K2FE1fmKQ97Tt3lXjkSARs/dGOMsPMMI+j0jvH7GRiHFXoQ+GUXD/57nbbTrbZ0HXCfGB4GzoASe/CmdDH974+/7Z5LbkkeD05GsQGW8VZoLPJpKQ+DATVe5kzZmtCh8VkuGWMJPIQTKME4F5lC6SoQQz9UIi7IP0MXoWGn0kWKcVZR6i1mhFsY3kGO89UFO3oZVaEW1D67Wih45kuSHM4OggWcbdAmrBNkQfDmZoRWTMAXf1gMmptA2JpbGlTsw6ekieEdx3E7sHBhpBmQHabDb/E/MW6FNLXCQvOWqTy+hasPRLCnoWKK3yYXLajy2ALYARASQZTO4QjAjAK2ByWYLk2U+YXOygEYKpi4A9qxG/MZ4U/mkjafS0YwL01GUkJSkf2n4ahzww0Gaz2Ww2A34BgilmmyuHzk8AAAAASUVORK5CYII=",
++			UserHomeBImgURL: "",
++			UserTitles: []*conf.UserTitle{},
++			UserIntro: "",
++			UserNickname: "",
++			UserCreateTime: "29991231 00:00:00",
++			UserSiYuanProExpireTime: -1,
++			UserToken: "token",
++			UserTokenExpireTime: "32503593600",
++			UserSiYuanRepoSize: 0,
++			UserSiYuanPointExchangeRepoSize: 0,
++			UserSiYuanAssetSize: 0,
++			UserTrafficUpload: 0,
++			UserTrafficDownload: 0,
++			UserTrafficAPIGet: 0,
++			UserTrafficAPIPut: 0,
++			UserTrafficTime: 0,
++			UserSiYuanSubscriptionPlan: 0,
++			UserSiYuanSubscriptionStatus: 0,
++			UserSiYuanSubscriptionType: 1,
++			UserSiYuanOneTimePayStatus: 1,
++	}
++
++	model.Conf.User = user
++	data, _ := gulu.JSON.MarshalJSON(user)
++	model.Conf.UserData = util.AESEncrypt(string(data))
++	model.Conf.Save()
++
++	ret.Data = user
++}
++
+ func logoutCloudUser(c *gin.Context) {
+ 	ret := gulu.Ret.NewResult()
+ 	defer c.JSON(http.StatusOK, ret)
